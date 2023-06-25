@@ -21,6 +21,12 @@
       "title": "Pipify Video",
       "description": "Set video presentation mode to picture-in-picture",
       "mode": "view"
+    },
+    {
+      "name": "save-tab-to-capacities",
+      "title": "Save to Capacities",
+      "description": "Save open tab details in Capacities",
+      "mode": "no-view"
     }
   ],
   "dependencies": {
