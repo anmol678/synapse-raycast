@@ -13,6 +13,12 @@ export default function Command() {
     const getVideos = async () => {
         try {
             const result = await getAllVideoTagsInSafari()
+
+            if (result.length === 1) {
+                onAction(0)
+                return
+            }
+
             setVideos(result)
         } catch (error) {
             await showToast({
