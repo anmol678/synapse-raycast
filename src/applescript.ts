@@ -51,6 +51,28 @@ export async function openNewTabAndEnterText(url: string, text: string) {
     await runAppleScript(script)
 }
 
+// Save to Capacities
+
+export async function openCapacitiesURLInBackground(url: string) {
+    const script = `
+        tell application "System Events"
+            set frontmostProcess to first process where it is frontmost
+            set visible of frontmostProcess to true
+        end tell
+
+        tell application "Capacities"
+            open location "${url}"
+        end tell
+
+        delay 1
+
+        tell application "System Events"
+            set frontmost of frontmostProcess to true
+        end tell
+    `
+    return await runAppleScript(script)
+}
+
 // Safari Video Extension
 
 export async function getAllVideoTagsInSafari() {

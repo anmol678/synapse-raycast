@@ -1,24 +1,30 @@
 import { showHUD, getSelectedText, showToast, Toast, confirmAlert } from "@raycast/api";
-import { getActiveTabDetails } from "./applescript";
+import { getActiveTabDetails, openCapacitiesURLInBackground } from "./applescript";
 import { SafariTabProps } from "./types";
-import { runAppleScript } from "run-applescript";
+
+async function composeXCallbackURL() {
+    const sourceApp = `x-source=Raycast&x-success=raycast://extensions&x-error=raycast://extensions`
+
+    const activeTab = await getActiveTabDetails() as SafariTabProps
+    let content = `[${activeTab.url}](${activeTab.url})`
+
+    try {
+        const selectedText = await getSelectedText()
+        if (selectedText) content = content + `\n\n> ${selectedText}`
+    } catch (e) {
+    }
+
+    const title = `Raycast Save ${(new Date()).toLocaleString()}`
+
+    const url = `capacities://x-callback-url/createNewObject?${sourceApp}&title=${encodeURIComponent(title)}&content=${encodeURIComponent(content)}`
+
+    return url
+}
 
 export default async function Command() {
     try {
-        const activeTab = await getActiveTabDetails() as SafariTabProps
-        let content = `[${activeTab.url}](${activeTab.url})`
-
-        try {
-            const selectedText = await getSelectedText()
-            if (selectedText) content = content + `\n\n> ${selectedText}`
-        } catch (e) {
-        }
-
-        const title = `Raycast Save ${(new Date()).toLocaleString()}`
-
-        const url = `capacities://x-callback-url/createNewObject?title=${encodeURIComponent(title)}&content=${encodeURIComponent(content)}&tags=${encodeURIComponent("[test]")}`
-        await runAppleScript(`do shell script "shortcuts run OpenURL <<< \\"${url}\\""`)
-
+        const url = await composeXCallbackURL()
+        await openCapacitiesURLInBackground(url);
         await showHUD("Saved to Capacities");
     } catch (error) {
         await showToast({
