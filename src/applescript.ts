@@ -1,5 +1,5 @@
 import { runAppleScript } from "run-applescript"
-import { convertSafariStringToJson } from "./utils"
+import { convertSafariStringToJson, parseArrayFromString } from "./utils"
 import { SafariTabProps } from "./types"
 
 export async function performSafariAction(actionScript: string, humanReadableOutput: boolean = true) {
@@ -49,4 +49,31 @@ export async function openNewTabAndEnterText(url: string, text: string) {
     `
 
     await runAppleScript(script)
+}
+
+// Safari Video Extension
+
+export async function getAllVideoTagsInSafari() {
+    const script = `
+        set videoTags to do JavaScript "Array.from(document.getElementsByTagName('video')).map(v => v.outerHTML)" in front document
+        return videoTags
+    `
+
+    try {
+        const result = await performSafariAction(script)
+        if (!result) throw new Error("No videos found on this page")
+
+        return parseArrayFromString(result)
+    } catch (error) {
+        throw error
+    }
+}
+
+export async function setVideoPresentationMode(index: number) {
+    const script = `
+        tell application "Safari"
+            do JavaScript "document.getElementsByTagName('video')[${index}].webkitSetPresentationMode('picture-in-picture')" in front document
+        end tell
+    `
+    return await runAppleScript(script)
 }

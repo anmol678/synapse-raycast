@@ -15,6 +15,12 @@
       "title": "Summarize Article",
       "description": "Get a summary of this article in Clarity Reader",
       "mode": "no-view"
+    },
+    {
+      "name": "safari-video",
+      "title": "Pipify Video",
+      "description": "Set video presentation mode to picture-in-picture",
+      "mode": "view"
     }
   ],
   "dependencies": {

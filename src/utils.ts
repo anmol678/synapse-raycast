@@ -15,3 +15,19 @@ export function convertSafariStringToJson(input: string): SafariTabProps {
 
     throw new Error('Invalid input string format');
 }
+
+export function parseArrayFromString(input: string) {
+    const regex = new RegExp(`([^,}]+)`, 'g');
+    const matches = input.match(regex);
+
+    if (matches) {
+        return matches.map((match) => match.trim());
+    }
+
+    return [];
+}
+
+export function parseJSON(jsonString: string): object {
+    const fixedString = jsonString.replace(/(?<={|,)\s*([^:]+?)\s*:/g, ' "$1":')
+    return JSON.parse(fixedString);
+}
