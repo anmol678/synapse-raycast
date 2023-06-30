@@ -19,6 +19,11 @@ export default function Command() {
                 return
             }
 
+            if (result[0].includes(`src="blob:https://www.youtube.com/`)) {
+                onAction(0)
+                return
+            }
+
             setVideos(result)
         } catch (error) {
             await showToast({
@@ -43,7 +48,7 @@ export default function Command() {
                     key={i}
                     actions={
                         <ActionPanel>
-                            <Action title="Set vide picture-in-picture" onAction={() => onAction(i)} />
+                            <Action title="Enter video picture-in-picture" onAction={() => onAction(i)} />
                         </ActionPanel>
                     }
 
