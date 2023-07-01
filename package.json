@@ -17,9 +17,15 @@
       "mode": "no-view"
     },
     {
-      "name": "safari-video",
+      "name": "safari-video-pipify",
       "title": "Pipify Video",
       "description": "Set video presentation mode to picture-in-picture",
+      "mode": "view"
+    },
+    {
+      "name": "safari-video-fullscreen",
+      "title": "Fullscreen Video",
+      "description": "Set video presentation mode to fullscreen",
       "mode": "view"
     },
     {

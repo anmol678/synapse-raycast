@@ -91,10 +91,10 @@ export async function getAllVideoTagsInSafari() {
     }
 }
 
-export async function setVideoPresentationMode(index: number) {
+export async function setVideoPresentationMode(index: number, presentationMode: string) {
     const script = `
         tell application "Safari"
-            do JavaScript "document.getElementsByTagName('video')[${index}].webkitSetPresentationMode('picture-in-picture')" in front document
+            do JavaScript "document.getElementsByTagName('video')[${index}].webkitSetPresentationMode('${presentationMode}')" in front document
         end tell
     `
     return await runAppleScript(script)

@@ -2,7 +2,16 @@ import { useState, useEffect } from "react";
 import { showToast, Toast, List, ActionPanel, Action, closeMainWindow, PopToRootType } from "@raycast/api";
 import { getAllVideoTagsInSafari, setVideoPresentationMode } from "./applescript";
 
-export default function Command() {
+export enum PresentationMode {
+    Pip = 'picture-in-picture',
+    Fullscreen = 'fullscreen'
+}
+
+interface CommandProps {
+    presentationMode: PresentationMode
+}
+
+export default function Command({ presentationMode }: CommandProps) {
     const [loading, setLoading] = useState(true)
     const [videos, setVideos] = useState<string[]>([])
 
@@ -36,7 +45,7 @@ export default function Command() {
     }
 
     const onAction = (index: number) => {
-        setVideoPresentationMode(index)
+        setVideoPresentationMode(index, presentationMode)
         closeMainWindow({ popToRootType: PopToRootType.Immediate })
     }
 
@@ -48,7 +57,7 @@ export default function Command() {
                     key={i}
                     actions={
                         <ActionPanel>
-                            <Action title="Enter video picture-in-picture" onAction={() => onAction(i)} />
+                            <Action title={presentationMode} onAction={() => onAction(i)} />
                         </ActionPanel>
                     }
 
